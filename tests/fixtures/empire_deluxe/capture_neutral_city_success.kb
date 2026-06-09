@@ -1,0 +1,94 @@
+knowledge_base EmpireCaptureNeutralCitySuccess
+
+types:
+  type Entity
+  type GameObject : Entity
+  type Tile : GameObject
+  type LandTile : Tile
+  type WaterTile : Tile
+  type CityTile : LandTile
+  type EdgeTile : Tile
+  type Unit : GameObject
+  type LandUnit : Unit
+  type SeaUnit : Unit
+  type Army : LandUnit
+  type Transport : SeaUnit
+  type Destroyer : SeaUnit
+  type Cruiser : SeaUnit
+  type Battleship : SeaUnit
+  type Player : Entity
+  type City : GameObject
+  type Action : Entity
+  type Recommendation : Action
+  type CaptureRecommendation : Recommendation
+  type AttackRecommendation : Recommendation
+  type LoadTransportRecommendation : Recommendation
+  type UseTransportRecommendation : Recommendation
+  type EscortRecommendation : Recommendation
+  type BombardmentRecommendation : Recommendation
+  type RepairRecommendation : Recommendation
+  type ProductionRecommendation : Recommendation
+  type RiskAssessment : Entity
+  type Threat : Entity
+  context_type Context : Entity
+  context_type Assertion : Context
+  context_type Situation : Context
+  context_type If : Context
+  context_type Then : Context
+
+relations:
+  relation located_on(Unit, Tile)
+  relation adjacent_to(Tile, Tile)
+  relation belongs_to(Unit, Player)
+  relation neutral_city(CityTile)
+  relation can_enter(Unit, Tile)
+  relation can_capture(Army, CityTile)
+  relation recommend_capture(Army, CityTile)
+
+individuals:
+  individual player_ai : Player
+  individual army_1 : Army
+  individual land_tile_1 : LandTile
+  individual neutral_city_1 : CityTile
+
+graphs:
+  graph current_situation {
+    concept a : Army = army_1
+    concept c : CityTile = neutral_city_1
+    concept p : Player = player_ai
+    concept t : LandTile = land_tile_1
+    relation belongs_to(a, p)
+    relation located_on(a, t)
+    relation adjacent_to(t, c)
+    relation neutral_city(c)
+    relation can_enter(a, c)
+    relation can_capture(a, c)
+  }
+  graph capture_condition {
+    concept a : Army
+    concept c : CityTile
+    concept t : LandTile
+    relation located_on(a, t)
+    relation adjacent_to(t, c)
+    relation neutral_city(c)
+    relation can_capture(a, c)
+  }
+  graph capture_result {
+    concept rec : CaptureRecommendation
+    concept a : Army
+    concept c : CityTile
+    relation recommend_capture(a, c)
+  }
+
+contexts:
+  context current_ctx : Situation kind SITUATION uses current_situation
+  context if_capture : If kind IF uses capture_condition
+  context then_capture : Then kind THEN uses capture_result
+
+rules:
+  rule CaptureNeutralCityRule {
+    if if_capture
+    then then_capture
+    priority 100
+    enabled true
+  }

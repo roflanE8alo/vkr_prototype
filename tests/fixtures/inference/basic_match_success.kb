@@ -1,0 +1,95 @@
+types:
+  type Entity
+  type GameObject : Entity
+  type Unit : GameObject
+  type Tile : GameObject
+
+relations:
+  relation threatens(Unit, Unit)
+  relation located_on(Unit, Tile)
+
+graphs:
+  graph source_success {
+    concept enemy : Unit = enemy1
+    concept tile : Tile = tile_1
+    concept u : Unit = u1
+    relation threatens(enemy, u)
+    relation located_on(u, tile)
+  }
+
+
+types:
+  type Entity
+  type GameObject : Entity
+  type Unit : GameObject
+  type EliteUnit : Unit
+  type Tile : GameObject
+  type Player : Entity
+  type Recommendation : Entity
+  type MatchRecommendation : Recommendation
+  context_type Context : Entity
+  context_type Assertion : Context
+  context_type Situation : Context
+  context_type If : Context
+  context_type Then : Context
+  context_type Hypothesis : Context
+
+relations:
+  relation threatens(Unit, Unit)
+  relation located_on(Unit, Tile)
+
+individuals:
+  individual u1 : Unit
+  individual elite1 : EliteUnit
+  individual enemy1 : Unit
+  individual tile_1 : Tile
+  individual player_ai : Player
+
+graphs:
+  graph source_success {
+    concept e : EliteUnit = elite1
+    concept enemy : Unit = enemy1
+    concept tile : Tile = tile_1
+    concept u : Unit = u1
+    relation threatens(enemy, u)
+    relation located_on(u, tile)
+  }
+
+  graph source_elite_only {
+    concept elite : EliteUnit = elite1
+  }
+
+  graph pattern_by_individual {
+    concept u : Unit = u1
+  }
+
+  graph pattern_without_individual {
+    concept u : Unit
+  }
+
+  graph pattern_subtype {
+    concept e : Unit
+  }
+
+  graph pattern_relation {
+    concept enemy : Unit = enemy1
+    concept u : Unit = u1
+    relation threatens(enemy, u)
+  }
+
+  graph match_result {
+    concept rec : MatchRecommendation
+  }
+
+contexts:
+  context source_ctx : Situation kind SITUATION uses source_success
+  context if_match : If kind IF uses pattern_relation
+  context then_match : Then kind THEN uses match_result
+
+rules:
+  rule MatchRule {
+    if if_match
+    then then_match
+    priority 1
+    enabled true
+  }

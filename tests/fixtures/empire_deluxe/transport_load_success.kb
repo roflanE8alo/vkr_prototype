@@ -1,0 +1,94 @@
+knowledge_base EmpireTransportLoadSuccess
+
+types:
+  type Entity
+  type GameObject : Entity
+  type Tile : GameObject
+  type LandTile : Tile
+  type WaterTile : Tile
+  type CityTile : LandTile
+  type EdgeTile : Tile
+  type Unit : GameObject
+  type LandUnit : Unit
+  type SeaUnit : Unit
+  type Army : LandUnit
+  type Transport : SeaUnit
+  type Destroyer : SeaUnit
+  type Cruiser : SeaUnit
+  type Battleship : SeaUnit
+  type Player : Entity
+  type City : GameObject
+  type Action : Entity
+  type Recommendation : Action
+  type CaptureRecommendation : Recommendation
+  type AttackRecommendation : Recommendation
+  type LoadTransportRecommendation : Recommendation
+  type UseTransportRecommendation : Recommendation
+  type EscortRecommendation : Recommendation
+  type BombardmentRecommendation : Recommendation
+  type RepairRecommendation : Recommendation
+  type ProductionRecommendation : Recommendation
+  type RiskAssessment : Entity
+  type Threat : Entity
+  context_type Context : Entity
+  context_type Assertion : Context
+  context_type Situation : Context
+  context_type If : Context
+  context_type Then : Context
+
+relations:
+  relation located_on(Unit, Tile)
+  relation adjacent_to(Tile, Tile)
+  relation has_free_capacity(Transport)
+  relation full_transport(Transport)
+  relation can_load(Army, Transport)
+  relation recommend_load(Army, Transport)
+
+individuals:
+  individual army_1 : Army
+  individual transport_1 : Transport
+  individual land_tile_1 : LandTile
+  individual water_1 : WaterTile
+
+graphs:
+  graph current_situation {
+    concept a : Army = army_1
+    concept land : LandTile = land_tile_1
+    concept tr : Transport = transport_1
+    concept water : WaterTile = water_1
+    relation located_on(a, land)
+    relation located_on(tr, water)
+    relation adjacent_to(land, water)
+    relation has_free_capacity(tr)
+    relation can_load(a, tr)
+  }
+  graph load_condition {
+    concept a : Army
+    concept land : LandTile
+    concept tr : Transport
+    concept water : WaterTile
+    relation located_on(a, land)
+    relation located_on(tr, water)
+    relation adjacent_to(land, water)
+    relation has_free_capacity(tr)
+    relation can_load(a, tr)
+  }
+  graph load_result {
+    concept rec : LoadTransportRecommendation
+    concept a : Army
+    concept tr : Transport
+    relation recommend_load(a, tr)
+  }
+
+contexts:
+  context current_ctx : Situation kind SITUATION uses current_situation
+  context if_load : If kind IF uses load_condition
+  context then_load : Then kind THEN uses load_result
+
+rules:
+  rule LoadTransportRule {
+    if if_load
+    then then_load
+    priority 70
+    enabled true
+  }

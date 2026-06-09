@@ -1,0 +1,135 @@
+{
+  "runner": "scripts/run_experiments.py",
+  "test_command": "python -m unittest discover -s tests -v",
+  "source_graph": "current_situation",
+  "results": [
+    {
+      "id": "EXP-EMPIRE-CAPTURE-01",
+      "family": "capture",
+      "fixture": "tests/fixtures/empire_deluxe/capture_neutral_city_success.kb",
+      "expected_recommendation": "CaptureRecommendation",
+      "expected_rules": [
+        "CaptureNeutralCityRule"
+      ],
+      "expected_warning": false,
+      "status": "passed",
+      "source_graph": "current_situation",
+      "inference_parameters": {
+        "mode": "one_step",
+        "collect_explanations": true,
+        "duplicate_suppression": false
+      },
+      "actual_recommendation": "CaptureRecommendation",
+      "fired_rules": [
+        "CaptureNeutralCityRule"
+      ],
+      "created_hypotheses": [
+        "CaptureRecommendation"
+      ],
+      "has_match_result": true,
+      "has_rule_application_result": true,
+      "has_derivation_record": true,
+      "has_explanation": true,
+      "warnings": [],
+      "expected_warnings": [],
+      "unexpected_warnings": [],
+      "errors": [],
+      "deterministic": true,
+      "kb_graphs_unchanged": true,
+      "generated_graphs_count": 1
+    },
+    {
+      "id": "EXP-EMPIRE-TRANSPORT-02",
+      "family": "transport",
+      "fixture": "tests/fixtures/empire_deluxe/transport_load_success.kb",
+      "expected_recommendation": "LoadTransportRecommendation",
+      "expected_rules": [
+        "LoadTransportRule"
+      ],
+      "expected_warning": false,
+      "status": "passed",
+      "source_graph": "current_situation",
+      "inference_parameters": {
+        "mode": "one_step",
+        "collect_explanations": true,
+        "duplicate_suppression": false
+      },
+      "actual_recommendation": "LoadTransportRecommendation",
+      "fired_rules": [
+        "LoadTransportRule"
+      ],
+      "created_hypotheses": [
+        "LoadTransportRecommendation"
+      ],
+      "has_match_result": true,
+      "has_rule_application_result": true,
+      "has_derivation_record": true,
+      "has_explanation": true,
+      "warnings": [],
+      "expected_warnings": [],
+      "unexpected_warnings": [],
+      "errors": [],
+      "deterministic": true,
+      "kb_graphs_unchanged": true,
+      "generated_graphs_count": 1
+    },
+    {
+      "id": "EXP-EMPIRE-PRODUCTION-01",
+      "family": "production",
+      "fixture": "tests/fixtures/empire_deluxe/landlocked_city_produces_army_only.kb",
+      "expected_recommendation": "ProductionRecommendation",
+      "expected_rules": [
+        "LandlockedCityProduceArmyRule"
+      ],
+      "expected_warning": false,
+      "status": "passed",
+      "source_graph": "current_situation",
+      "inference_parameters": {
+        "mode": "one_step",
+        "collect_explanations": true,
+        "duplicate_suppression": false
+      },
+      "actual_recommendation": "ProductionRecommendation",
+      "fired_rules": [
+        "LandlockedCityProduceArmyRule"
+      ],
+      "created_hypotheses": [
+        "ProductionRecommendation"
+      ],
+      "has_match_result": true,
+      "has_rule_application_result": true,
+      "has_derivation_record": true,
+      "has_explanation": true,
+      "warnings": [],
+      "expected_warnings": [],
+      "unexpected_warnings": [],
+      "errors": [],
+      "deterministic": true,
+      "kb_graphs_unchanged": true,
+      "generated_graphs_count": 1
+    }
+  ],
+  "metrics": {
+    "total_scenarios": 3,
+    "executable_scenarios": 3,
+    "passed": 3,
+    "partial": 0,
+    "failed": 0,
+    "deferred": 0,
+    "pass_rate_executable": 1.0,
+    "scenarios_with_hypothesis": 3,
+    "hypothesis_rate_executable": 1.0,
+    "scenarios_with_derivation_record": 3,
+    "derivation_record_rate_executable": 1.0,
+    "scenarios_with_explanation": 3,
+    "explanation_rate_executable": 1.0,
+    "reproducible_scenarios": 3,
+    "reproducibility_rate_executable": 1.0,
+    "expected_warning_messages": 0,
+    "unexpected_warning_messages": 0,
+    "unexpected_errors": 0,
+    "scenarios_with_unchanged_kb_graphs": 3,
+    "unchanged_kb_graphs_rate_executable": 1.0,
+    "scenarios_with_generated_graphs": 3
+  }
+}

@@ -1,0 +1,83 @@
+knowledge_base EmpireLandlockedCityProducesArmyOnly
+
+types:
+  type Entity
+  type GameObject : Entity
+  type Tile : GameObject
+  type LandTile : Tile
+  type WaterTile : Tile
+  type CityTile : LandTile
+  type EdgeTile : Tile
+  type Unit : GameObject
+  type LandUnit : Unit
+  type SeaUnit : Unit
+  type Army : LandUnit
+  type Transport : SeaUnit
+  type Destroyer : SeaUnit
+  type Cruiser : SeaUnit
+  type Battleship : SeaUnit
+  type Player : Entity
+  type City : GameObject
+  type Action : Entity
+  type Recommendation : Action
+  type AttackRecommendation : Recommendation
+  type CaptureRecommendation : Recommendation
+  type LoadTransportRecommendation : Recommendation
+  type UseTransportRecommendation : Recommendation
+  type EscortRecommendation : Recommendation
+  type BombardmentRecommendation : Recommendation
+  type RepairRecommendation : Recommendation
+  type ProductionRecommendation : Recommendation
+  type RiskAssessment : Entity
+  type Threat : Entity
+  context_type Context : Entity
+  context_type Assertion : Context
+  context_type Situation : Context
+  context_type If : Context
+  context_type Then : Context
+
+relations:
+  relation landlocked(CityTile)
+  relation can_produce(CityTile, Unit)
+  relation cannot_produce(CityTile, Unit)
+  relation recommend_production(CityTile, Unit)
+
+individuals:
+  individual city_1 : CityTile
+  individual army_product : Army
+  individual transport_product : Transport
+
+graphs:
+  graph current_situation {
+    concept army : Army = army_product
+    concept city : CityTile = city_1
+    concept transport : Transport = transport_product
+    relation landlocked(city)
+    relation can_produce(city, army)
+    relation cannot_produce(city, transport)
+  }
+  graph production_condition {
+    concept army : Army
+    concept city : CityTile
+    relation landlocked(city)
+    relation can_produce(city, army)
+  }
+  graph production_result {
+    concept rec : ProductionRecommendation
+    concept army : Army
+    concept city : CityTile
+    relation recommend_production(city, army)
+  }
+
+contexts:
+  context current_ctx : Situation kind SITUATION uses current_situation
+  context if_production : If kind IF uses production_condition
+  context then_production : Then kind THEN uses production_result
+
+rules:
+  rule LandlockedCityProduceArmyRule {
+    if if_production
+    then then_production
+    priority 50
+    enabled true
+  }
